@@ -218,7 +218,7 @@ If you find this plugin helpful, please consider supporting the project. Your su
       </a>
     </td>
     <td>
-      <a href="https://github.com/sponsors/yourname">
+      <a href="https://github.com/tingyu9315">
         <img src="https://img.shields.io/badge/GitHub%20Sponsors-EA4AAA?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Sponsors">
       </a>
     </td>
