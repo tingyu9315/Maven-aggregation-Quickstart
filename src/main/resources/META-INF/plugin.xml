@@ -1,0 +1,85 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.wd.maven-aggregation</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Maven-aggregation Quickstart</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="1938023944@qq.com" url="https://www.wandong.com">wandong</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+<p>Quickstart for generating Maven aggregation projects, helping you create standard multi-module Maven project structures.</p>
+<p><b>Main Features:</b></p>
+<ul>
+  <li>Create Maven multi-module project structure with one click</li>
+  <li>Automatically configure dependencies between modules</li>
+  <li>Support custom module names</li>
+  <li>Support selection of Java version</li>
+  <li>Automatically generate project README and .gitignore files</li>
+</ul>
+<p><b>Version 2.0.0 Changes:</b></p>
+<ul>
+  <li>Enhanced module dependency management</li>
+  <li>Improved compatibility with newer IntelliJ IDEA versions</li>
+  <li>Better support for Java 17 and Java 21</li>
+  <li>Optimized project generation performance</li>
+</ul>
+<p><b>Usage:</b></p>
+<p>In IDEA, create an empty project (Empty Project), select "File > New > Create Maven Aggregation Project", then complete the configuration according to the wizard.</p>
+<p>Minimum supported version: IntelliJ IDEA 2020.3 and above</p>
+<p>Maven聚合项目快速生成插件，帮助您快速创建标准的多模块Maven项目结构。</p>
+
+    <p><b>主要功能：</b></p>
+    <ul>
+      <li>一键创建Maven多模块项目结构</li>
+      <li>自动配置模块间的依赖关系</li>
+      <li>支持自定义模块名称</li>
+      <li>支持选择Java版本</li>
+      <li>自动生成项目README和.gitignore文件</li>
+    </ul>
+    
+    <p><b>2.0.0版本变更：</b></p>
+    <ul>
+      <li>增强的模块依赖管理</li>
+      <li>改进了与新版IntelliJ IDEA的兼容性</li>
+      <li>更好的Java 17和Java 21支持</li>
+      <li>优化的项目生成性能</li>
+    </ul>
+
+    <p><b>使用方法：</b></p>
+    <p>在IDEA中，首先创建空的工程(Empty Project)。选择"File > New > Create Maven Aggregation Project"，然后按照向导完成配置。</p>
+    <p>最低支持版本：IntelliJ IDEA 2020.3及以上版本</p>
+]]></description>
+
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+
+    <actions>
+        <action id="QuickstartAggregationAction" class="com.wd.maven.aggregation.QuickstartAggregationAction"
+                text="Create Maven Aggregation Project" description="Creates a new Maven multi-module project template">
+            <!--            <add-to-group group-id="NewGroup" anchor="first"/>-->
+            <!--            <add-to-group group-id="NewProjectOrModuleGroup" anchor="first"/>-->
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+    </actions>
+
+
+    <!--手动设置版本号    -->
+    <idea-version since-build="203" until-build="253.*"/>
+
+
+</idea-plugin>
