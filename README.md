@@ -185,8 +185,8 @@ Use Gradle to build the plugin:
 # Clean the project
 ./gradlew clean
 
-# Build the project
-./gradlew build
+#使用禁用配置缓存的方式重新构建
+./gradlew build --no-configuration-cache
 ```
 
 After building, the plugin `.jar` file will be generated in the `build/libs/` directory.
