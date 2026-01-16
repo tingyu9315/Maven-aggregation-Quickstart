@@ -22,6 +22,7 @@ intellij {
     //设置各版本兼容
     updateSinceUntilBuild.set(false) // 不自动更新 plugin.xml 中的 since-build/until-build
     plugins.set(listOf()) // 如果没有依赖其他插件
+    pluginName.set("Maven-aggregation Quickstart")
 }
 
 
@@ -47,6 +48,10 @@ tasks {
     patchPluginXml {
         sinceBuild.set("203") // 2020.3 的构建号是 203
         untilBuild.set("253.*") // 表示支持到未来所有版本（例如支持到 2099 年）
+        // 添加变更日志
+        changeNotes.set(provider {
+            file("CHANGELOG.md").readText()
+        })
     }
 
     signPlugin {

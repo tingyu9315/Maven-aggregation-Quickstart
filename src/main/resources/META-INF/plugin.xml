@@ -52,17 +52,7 @@
     <p>最低支持版本：IntelliJ IDEA 2020.3及以上版本</p>
 ]]></description>
 
-    <!-- What’s New 新版本更新介绍   -->
-    <change-notes>
-        <![CDATA[
-    <p><b>2.1.0版本变更：</b></p>
-    <ul>
-      <li>新增单模块 MVC 架构支持</li>
-      <li>优化架构选择 UI</li>
-      <li>修复已知问题</li>
-    </ul>
-]]>
-    </change-notes>
+
 
 
 
