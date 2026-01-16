@@ -8,6 +8,9 @@ public class MavenAggregationSettings {
     private String[] modules = {"api", "common", "mapper", "pojo", "service"};
     private boolean addDependencies = true; // 默认添加依赖
 
+    private ArchitectureType architectureType = ArchitectureType.MULTI_MODULE;
+    private String domainName = "order";
+
     public String getGroupId() {
         return groupId;
     }
@@ -56,7 +59,21 @@ public class MavenAggregationSettings {
         this.addDependencies = addDependencies;
     }
 
+    public ArchitectureType getArchitectureType() {
+        return architectureType;
+    }
 
+    public void setArchitectureType(ArchitectureType architectureType) {
+        this.architectureType = architectureType;
+    }
+
+    public String getDomainName() {
+        return domainName;
+    }
+
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
+    }
 
     public MavenAggregationSettings() { }
 }

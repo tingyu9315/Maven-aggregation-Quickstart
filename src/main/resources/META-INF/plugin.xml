@@ -21,14 +21,15 @@
   <li>Automatically configure dependencies between modules</li>
   <li>Support custom module names</li>
   <li>Support selection of Java version</li>
+  <li>Support for Single-module MVC Architecture</li>
+  <li>Support for Single-module DDD Architecture</li>
   <li>Automatically generate project README and .gitignore files</li>
 </ul>
-<p><b>Version 2.0.0 Changes:</b></p>
+<p><b>Version 2.1.0 Changes:</b></p>
 <ul>
-  <li>Enhanced module dependency management</li>
-  <li>Improved compatibility with newer IntelliJ IDEA versions</li>
-  <li>Better support for Java 17 and Java 21</li>
-  <li>Optimized project generation performance</li>
+  <li>Added support for Single-module MVC Architecture</li>
+  <li>Optimized UI for architecture selection</li>
+  <li>Fixed bugs</li>
 </ul>
 <p><b>Usage:</b></p>
 <p>In IDEA, create an empty project (Empty Project), select "File > New > Create Maven Aggregation Project", then complete the configuration according to the wizard.</p>
@@ -41,15 +42,16 @@
       <li>自动配置模块间的依赖关系</li>
       <li>支持自定义模块名称</li>
       <li>支持选择Java版本</li>
+      <li>支持单模块 MVC 架构</li>
+      <li>支持单模块 DDD 架构</li>
       <li>自动生成项目README和.gitignore文件</li>
     </ul>
     
-    <p><b>2.0.0版本变更：</b></p>
+    <p><b>2.1.0版本变更：</b></p>
     <ul>
-      <li>增强的模块依赖管理</li>
-      <li>改进了与新版IntelliJ IDEA的兼容性</li>
-      <li>更好的Java 17和Java 21支持</li>
-      <li>优化的项目生成性能</li>
+      <li>新增单模块 MVC 架构支持</li>
+      <li>优化架构选择 UI</li>
+      <li>修复已知问题</li>
     </ul>
 
     <p><b>使用方法：</b></p>

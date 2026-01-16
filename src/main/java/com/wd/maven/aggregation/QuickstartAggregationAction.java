@@ -31,12 +31,12 @@ public class QuickstartAggregationAction extends AnAction {
             String version = dialog.getVersion();
             String[] modules = dialog.getModules();
             String javaVersion = dialog.getJavaVersion();
-            boolean isSingleModule = dialog.isSingleModule();
+            ArchitectureType architectureType = dialog.getArchitectureType();
             String domainName = dialog.getDomainName();
 
             // 生成项目
             AggregationProjectGenerator generator = new AggregationProjectGenerator();
-            generator.generateProject(project, groupId, artifactId, version, modules, javaVersion, dialog.isAddDependencies(), isSingleModule, domainName);
+            generator.generateProject(project, groupId, artifactId, version, modules, javaVersion, dialog.isAddDependencies(), architectureType, domainName);
 
             // 刷新项目视图
             refreshProjectView(project);

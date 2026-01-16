@@ -5,6 +5,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.wd.maven.aggregation.AggregationProjectGenerator;
+import com.wd.maven.aggregation.ArchitectureType;
 import com.wd.maven.aggregation.MavenAggregationSettings;
 import com.wd.maven.aggregation.MavenAggregationSettingsPanel;
 import org.jetbrains.annotations.NotNull;
@@ -52,8 +53,8 @@ public class MavenAggregationProjectGenerator extends WebProjectTemplate<MavenAg
                 settings.getModules(),
                 settings.getJavaVersion(),
                 settings.isAddDependencies(),
-                false, // 默认多模块模式
-                null
+                settings.getArchitectureType(),
+                settings.getDomainName()
         );
     }
     
@@ -66,13 +67,13 @@ public class MavenAggregationProjectGenerator extends WebProjectTemplate<MavenAg
      * @param modules 模块列表
      * @param javaVersion Java版本
      * @param addDependencies 是否添加依赖
-     * @param isSingleModule 是否为单模块
+     * @param architectureType 架构类型
      * @param domainName 领域名称（单模块时使用）
      */
     public void generateProject(@NotNull Project project, @NotNull String groupId, @NotNull String artifactId, @NotNull String version, @NotNull String[] modules, 
-                              @NotNull String javaVersion, boolean addDependencies, boolean isSingleModule, String domainName) {
+                              @NotNull String javaVersion, boolean addDependencies, ArchitectureType architectureType, String domainName) {
         // 调用核心生成器，支持单模块/多模块模式
         AggregationProjectGenerator generator = new AggregationProjectGenerator();
-        generator.generateProject(project, groupId, artifactId, version, modules, javaVersion, addDependencies, isSingleModule, domainName);
+        generator.generateProject(project, groupId, artifactId, version, modules, javaVersion, addDependencies, architectureType, domainName);
     }
 }

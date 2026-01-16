@@ -5,9 +5,12 @@ plugins {
 }
 
 group = "com.wd"
-version = "2.0.0"
+version = "2.1.0"
 
 repositories {
+    maven {
+        url = uri("https://maven.aliyun.com/repository/public")
+    }
     mavenCentral()
 }
 

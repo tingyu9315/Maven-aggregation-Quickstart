@@ -2,6 +2,7 @@ package com.wd.maven.aggregation;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.wd.maven.aggregation.ArchitectureType;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,11 +27,11 @@ public class AggregationProjectGenerator {
      */
     public void generateProject(Project project, String groupId, String artifactId, String version, String[] modules, String javaVersion, boolean addDependencies) {
         // 默认使用多模块模式
-        generateProject(project, groupId, artifactId, version, modules, javaVersion, addDependencies, false, "");
+        generateProject(project, groupId, artifactId, version, modules, javaVersion, addDependencies, ArchitectureType.MULTI_MODULE, "");
     }
 
     /**
-     * 生成项目，支持单模块DDD架构和多模块架构
+     * 生成项目，支持单模块DDD架构、单模块MVC架构和多模块架构
      * @param project 项目
      * @param groupId 组织ID
      * @param artifactId 项目ID
@@ -38,11 +39,11 @@ public class AggregationProjectGenerator {
      * @param modules 模块列表（多模块时使用）
      * @param javaVersion Java版本
      * @param addDependencies 是否添加常用依赖
-     * @param isSingleModule 是否为单模块模式
+     * @param architectureType 架构类型
      * @param domainName 领域名称（单模块DDD架构时使用）
      */
     public void generateProject(Project project, String groupId, String artifactId, String version, String[] modules, 
-                               String javaVersion, boolean addDependencies, boolean isSingleModule, String domainName) {
+                               String javaVersion, boolean addDependencies, ArchitectureType architectureType, String domainName) {
         String baseDir = project.getBasePath();
         if ( baseDir == null || baseDir.isEmpty()) {
             LOG.warn("Project base directory not found.");
@@ -52,7 +53,7 @@ public class AggregationProjectGenerator {
         Path projectPath = Paths.get(baseDir);
         
         try {
-            if (isSingleModule) {
+            if (architectureType == ArchitectureType.SINGLE_MODULE_DDD) {
                 // 单模块DDD架构
                 LOG.info("开始生成单模块DDD架构项目: " + artifactId);
                 
@@ -67,6 +68,21 @@ public class AggregationProjectGenerator {
                 writeGitignore(projectPath);
                 
                 LOG.info("单模块DDD架构项目生成完成: " + artifactId);
+            } else if (architectureType == ArchitectureType.SINGLE_MODULE_MVC) {
+                // 单模块MVC架构
+                LOG.info("开始生成单模块MVC架构项目: " + artifactId);
+                
+                // 1. 创建MVC目录结构
+                createMvcDirectoryStructure(projectPath, groupId);
+                
+                // 2. 写入单模块POM (复用单模块POM生成逻辑)
+                writeSingleModulePom(projectPath, groupId, artifactId, version, javaVersion, addDependencies);
+                
+                // 3. 生成辅助文件
+                writeMvcReadme(projectPath, artifactId);
+                writeGitignore(projectPath);
+                
+                LOG.info("单模块MVC架构项目生成完成: " + artifactId);
             } else {
                 // 多模块架构（原有逻辑）
                 LOG.info("开始生成Maven聚合项目: " + artifactId);
@@ -141,6 +157,67 @@ public class AggregationProjectGenerator {
         // 创建DDD目录结构 - 接口层
         createDirectoryStructure(mainJavaPath.resolve("interface/controller/web"));
         createDirectoryStructure(mainJavaPath.resolve("interface/controller/rpc"));
+    }
+
+    /**
+     * 创建MVC目录结构（单模块）
+     */
+    private void createMvcDirectoryStructure(Path projectPath, String groupId) {
+        // 基础路径
+        String basePackagePath = groupId.replace('.', '/');
+        Path mainJavaPath = projectPath.resolve("src/main/java").resolve(basePackagePath);
+        Path testJavaPath = projectPath.resolve("src/test/java").resolve(basePackagePath);
+        Path resourcesPath = projectPath.resolve("src/main/resources");
+
+        // 创建基础目录结构
+        createDirectoryStructure(mainJavaPath);
+        createDirectoryStructure(testJavaPath);
+        createDirectoryStructure(resourcesPath);
+
+        // 创建MVC目录结构
+        createDirectoryStructure(mainJavaPath.resolve("controller"));
+        createDirectoryStructure(mainJavaPath.resolve("service/impl"));
+        createDirectoryStructure(mainJavaPath.resolve("mapper")); // 或 dao
+        createDirectoryStructure(mainJavaPath.resolve("entity")); // 或 model
+        createDirectoryStructure(mainJavaPath.resolve("common"));
+        // 可选：添加DTO/VO
+        createDirectoryStructure(mainJavaPath.resolve("model/dto"));
+        createDirectoryStructure(mainJavaPath.resolve("model/vo"));
+    }
+
+    /**
+     * 写入MVC架构的README文件
+     */
+    private void writeMvcReadme(Path projectPath, String artifactId) {
+        StringBuilder content = new StringBuilder();
+        content.append("# ").append(artifactId).append(" 单模块MVC架构项目\n\n")
+               .append("这是一个基于经典分层架构(MVC)的单模块项目模板。\n\n")
+               .append("## 项目结构\n\n")
+               .append("```\n")
+               .append(artifactId).append("/\n")
+               .append("├── src/main/java/com/example/...\n")
+               .append("│   ├── controller   # 控制层，处理HTTP请求\n")
+               .append("│   ├── service      # 业务逻辑层接口\n")
+               .append("│   │   └── impl     # 业务逻辑层实现\n")
+               .append("│   ├── mapper       # 数据访问层(MyBatis Mapper)\n")
+               .append("│   ├── entity       # 数据库实体类\n")
+               .append("│   ├── model        # 数据模型\n")
+               .append("│   │   ├── dto      # 数据传输对象\n")
+               .append("│   │   └── vo       # 视图对象\n")
+               .append("│   └── common       # 公共工具与组件\n")
+               .append("└── pom.xml          # Maven配置文件\n")
+               .append("```\n\n")
+               .append("## 快速开始\n\n")
+               .append("1. 修改 `pom.xml` 添加所需依赖\n")
+               .append("2. 配置 `application.yml` 或 `application.properties`\n")
+               .append("3. 编写 Controller 和 Service\n")
+               .append("\n")
+               .append("## 构建运行\n\n")
+               .append("```bash\n")
+               .append("mvn clean spring-boot:run\n")
+               .append("```\n");
+        
+        writeToFile(projectPath.resolve("README.md"), content.toString());
     }
 
     /**

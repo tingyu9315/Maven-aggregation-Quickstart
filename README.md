@@ -11,7 +11,7 @@ Maven-aggregation Quickstart is an IntelliJ IDEA plugin designed to quickly gene
 - **Support for custom module names**
 - **Support for Java version selection (8/11/17/21)**
 - **Automatic generation of project README.md and .gitignore files**
-- **Support for both single-module DDD architecture and multi-module architecture**
+- **Support for multi-module architecture, single-module DDD architecture, and single-module MVC architecture**
 - **Automatic addition of common dependencies (Lombok, Hutool, SLF4J, Logback, Swagger, JUnit, etc.)**
 
 ---
@@ -35,7 +35,7 @@ Maven-aggregation Quickstart is an IntelliJ IDEA plugin designed to quickly gene
     - GroupId: The organization identifier for the Maven project (e.g. `com.example`)
     - ArtifactId: Project name
     - Version: Project version (default `1.0.0`)
-    - Select architecture mode: Single-module DDD architecture or multi-module architecture
+    - Select architecture mode: Multi-module architecture / Single-module DDD architecture / Single-module MVC architecture
     - Module names: Enter multiple module names (e.g. `api`, `service`, `pojo`)
     - Java version: Select the Java version used by the project (8/11/17/21)
     - Common dependencies: Select dependencies to add (Lombok, Hutool, SLF4J, etc.)
@@ -85,6 +85,28 @@ your-project-name/
 └── .gitignore
 ```
 
+### Single-module MVC Architecture Project Structure
+```
+your-project-name/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/example/yourproject/
+│   │   │       ├── controller/      # Controller layer
+│   │   │       ├── service/         # Service layer
+│   │   │       │   └── impl/        # Service implementation
+│   │   │       ├── mapper/          # Mapper/DAO layer
+│   │   │       ├── entity/          # Entity/Model layer
+│   │   │       ├── model/           # DTO/VO, etc.
+│   │   │       └── common/          # Common utilities
+│   │   └── resources/
+│   └── test/
+│       └── java/
+├── pom.xml
+├── README.md
+└── .gitignore
+```
+
 ---
 
 ## 🧩 Module Descriptions
@@ -109,6 +131,16 @@ your-project-name/
 | `domain`          | Domain layer, containing core business logic and domain models |
 | `infrastructure`  | Infrastructure layer, providing technical implementation and external dependencies |
 | `interfaces`      | Interface layer, responsible for providing external service interfaces |
+
+### Single-module MVC Architecture Layer Descriptions
+
+| Layer | Description |
+|-------|-------------|
+| `controller`     | Controller layer, handles external requests |
+| `service`        | Service layer, business logic |
+| `mapper`         | Data access layer (Mapper/DAO) |
+| `entity`         | Entity/Model layer |
+| `common`         | Common utilities and shared components |
 
 ---
 

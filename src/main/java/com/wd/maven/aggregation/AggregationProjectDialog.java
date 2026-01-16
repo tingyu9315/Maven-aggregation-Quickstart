@@ -23,10 +23,12 @@ public class AggregationProjectDialog extends DialogWrapper {
     private JBTextField versionField;
     private JBTextField modulesField;
     private JBTextField domainNameField; // 用于单模块DDD架构
+    private JLabel domainNameLabel;
     private JComboBox<String> javaVersionComboBox;
     
     // 单模块/多模块选择
     private JRadioButton singleModuleRadioButton;
+    private JRadioButton singleMvcRadioButton;
     private JRadioButton multiModuleRadioButton;
     private ButtonGroup moduleTypeButtonGroup;
     
@@ -62,13 +64,16 @@ public class AggregationProjectDialog extends DialogWrapper {
         panel.add(new JLabel("项目类型:"), c);
 
         JPanel moduleTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        singleModuleRadioButton = new JRadioButton("单模块DDD架构", false);
         multiModuleRadioButton = new JRadioButton("多模块架构", true);
+        singleModuleRadioButton = new JRadioButton("单模块DDD架构", false);
+        singleMvcRadioButton = new JRadioButton("单模块MVC架构", false);
         moduleTypeButtonGroup = new ButtonGroup();
-        moduleTypeButtonGroup.add(singleModuleRadioButton);
         moduleTypeButtonGroup.add(multiModuleRadioButton);
-        moduleTypePanel.add(singleModuleRadioButton);
+        moduleTypeButtonGroup.add(singleModuleRadioButton);
+        moduleTypeButtonGroup.add(singleMvcRadioButton);
         moduleTypePanel.add(multiModuleRadioButton);
+        moduleTypePanel.add(singleModuleRadioButton);
+        moduleTypePanel.add(singleMvcRadioButton);
 
         c.gridx = 1;
         c.weightx = 1.0;
@@ -78,7 +83,8 @@ public class AggregationProjectDialog extends DialogWrapper {
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 0.0;
-        panel.add(new JLabel("领域名称:"), c);
+        domainNameLabel = new JLabel("领域名称:");
+        panel.add(domainNameLabel, c);
 
         c.gridx = 1;
         c.weightx = 1.0;
@@ -133,7 +139,7 @@ public class AggregationProjectDialog extends DialogWrapper {
         this.modulesPanel = new JPanel(new GridBagLayout());
         GridBagConstraints mc = new GridBagConstraints();
         mc.fill = GridBagConstraints.HORIZONTAL;
-        mc.insets = new Insets(5, 5, 5, 5);
+        mc.insets = new Insets(0, 0, 0, 0);
 
         // 预定义模块
         mc.gridx = 0;
@@ -170,17 +176,13 @@ public class AggregationProjectDialog extends DialogWrapper {
         modulesField = new JBTextField();
         this.modulesPanel.add(modulesField, mc);
 
-        // 将模块面板添加到主面板
+        // 将模块面板添加到主面板（占满两列，避免缩进不一致）
         c.gridx = 0;
         c.gridy = 6;
-        c.weightx = 0.0;
-        c.gridwidth = 1;
-        panel.add(new JBLabel(), c); // 占位
-
-        c.gridx = 1;
         c.weightx = 1.0;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         panel.add(this.modulesPanel, c);
+        c.gridwidth = 1;
         
         // 添加常用依赖选项
         c.gridx = 0;
@@ -220,7 +222,9 @@ public class AggregationProjectDialog extends DialogWrapper {
      */
     private void updateUIComponentsVisibility() {
         boolean isMultiModule = multiModuleRadioButton.isSelected();
-        domainNameField.setVisible(!isMultiModule); // 单模块时显示领域名称
+        boolean isDdd = singleModuleRadioButton.isSelected();
+        domainNameLabel.setVisible(isDdd);
+        domainNameField.setVisible(isDdd);
         modulesPanel.setVisible(isMultiModule); // 多模块时显示模块选择
     }
 
@@ -235,7 +239,6 @@ public class AggregationProjectDialog extends DialogWrapper {
         if (versionField.getText().trim().isEmpty()) {
             return new ValidationInfo("Version不能为空", versionField);
         }
-        // 单模块时验证领域名称
         if (singleModuleRadioButton.isSelected() && domainNameField.getText().trim().isEmpty()) {
             return new ValidationInfo("领域名称不能为空", domainNameField);
         }
@@ -280,11 +283,14 @@ public class AggregationProjectDialog extends DialogWrapper {
         return modulesList.toArray(new String[0]);
     }
     
-    /**
-     * 是否为单模块模式
-     */
-    public boolean isSingleModule() {
-        return singleModuleRadioButton.isSelected();
+    public ArchitectureType getArchitectureType() {
+        if (multiModuleRadioButton.isSelected()) {
+            return ArchitectureType.MULTI_MODULE;
+        }
+        if (singleMvcRadioButton.isSelected()) {
+            return ArchitectureType.SINGLE_MODULE_MVC;
+        }
+        return ArchitectureType.SINGLE_MODULE_DDD;
     }
     
     /**
